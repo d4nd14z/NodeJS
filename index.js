@@ -16,6 +16,16 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+//Rutas normales
+app.get("/", (req, res) => {
+    res.send({ message: "Hola mundo !!!"});
+});
+
+//Rutas con parametros
+app.get("/:name", (req, res) => {
+    res.send({ message: `Hola, ${ req.params.name }`});
+});
+
 app.listen(3000, () => {
     console.log(`D2(RS) Project - API RESTFull Running on http://localhost:${port} .......................... (OK)`);
 });
