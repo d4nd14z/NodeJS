@@ -9,10 +9,18 @@
 
 'use strict'
 
-const express = require("express");
+const mongoose = require("mongoose");
+const app = require("./app");
+const config = require("./config");
 
-const app = express();
-
-app.listen(3000, () => {
-    console.log("D2(RS) API RESTFull Running on http://localhost:3000 .......................... (OK)")
+mongoose.connect(config.dbase, {useNewUrlParser: true, useUnifiedTopology: true}, (err, res) => {
+    if (err){
+        return console.error(`D2(RS) Project - MongoDB Server Running on ${config.dbase} ...... (ERROR)\n${err}`);
+    }
+    else{
+        console.log(`D2(RS) Project - MongoDB Server Running on ${config.dbase} ...... (OK)`);
+        app.listen(config.port, () => {
+            console.log(`D2(RS) Project - API RESTFull Running on http://${config.host}:${config.port} ........................... (OK)`);
+        });
+    }    
 });
