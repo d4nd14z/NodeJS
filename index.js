@@ -10,6 +10,7 @@
 'use strict'
 
 const express = require("express");
+const mongoose = require("mongoose");
 const app = express();
 const host = process.env.HOST || '127.0.0.1';
 const port = process.env.PORT || 3000;
@@ -69,6 +70,15 @@ app.delete("/demo/product/:productId", (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log(`D2(RS) Project - API RESTFull Running on http://${host}:${port} .......................... (OK)`);
+mongoose.connect("mongodb://localhost:27017/d2(r2)-project", {useNewUrlParser: true, useUnifiedTopology: true}, (err, res) => {
+    if (err){
+        return console.error(`D2(R2) Project - ERROR: No se ha podido establecer la conexion con la base de datos mongodb://localhost:27017/d2(r2)-project.\n${err}`);
+    }
+    else{
+        console.log("D2(RS) Project - MongoDB Server Running on mongodb://localhost:27017/d2(r2)-project....... (OK)");
+        app.listen(port, () => {
+            console.log(`D2(RS) Project - API RESTFull Running on http://${host}:${port} ........................... (OK)`);
+        });
+    }    
 });
+
