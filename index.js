@@ -11,9 +11,11 @@
 
 const express = require("express");
 const app = express();
+const port = process.env.PORT || 3000;
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.listen(3000, () => {
-    console.log("D2(RS) API RESTFull Running on http://localhost:3000 .......................... (OK)");
+    console.log(`D2(RS) Project - API RESTFull Running on http://localhost:${port} .......................... (OK)`);
 });
