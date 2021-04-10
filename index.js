@@ -18,6 +18,9 @@ const dbhost = "localhost";
 const dbport = "27017";
 const database = "d2(r2)-project";
 
+//DatabaseModels
+const Product = require("./models/product");
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -48,8 +51,29 @@ app.get("/demo/product/:productId", (req, res) => {
  * @since: 2021-04-10
  */
 app.post("/demo/product", (req, res) => {
-    console.log(req.body);
-    res.status(200).send({ message: 'El producto se ha recibido' });
+    let product = new Product();
+    product.name = req.body.name;
+    product.picture = req.body.picture;
+    product.price = req.body.price;
+    product.category = req.body.category;
+    product.description = req.body.description;
+
+    product.save((err, stored) => {
+        if (!err){ 
+            res.status(200).send({
+                code: 200,
+                data: stored,
+                message: "Producto registrado exitosamente."
+            });
+        }
+        else{
+            res.status(500).send({
+                code: 500,
+                data: null,
+                message: "No se ha podido almacenar el producto en la base de datos."
+            });
+        }
+    });
 });
 
 /**
@@ -75,7 +99,7 @@ app.delete("/demo/product/:productId", (req, res) => {
 
 mongoose.connect(`mongodb://${dbhost}:${dbport}/${database}`, {useNewUrlParser: true, useUnifiedTopology: true}, (err, res) => {
     if (err){
-        return console.error(`D2(R2) Project - ERROR: No se ha podido establecer la conexion con la base de datos mongodb://${dbhost}:${dbport}/${database}.\n${err}`);
+        return console.error(`D2(RS) Project - MongoDB Server Running on mongodb://${dbhost}:${dbport}/${database} ...... (ERROR)\n${err}`);
     }
     else{
         console.log(`D2(RS) Project - MongoDB Server Running on mongodb://${dbhost}:${dbport}/${database} ...... (OK)`);
